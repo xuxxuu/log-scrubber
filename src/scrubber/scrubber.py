@@ -14,8 +14,13 @@ def parse_and_replace(src_file: Path, dst_file: Path, pairs: list[tuple[re.Patte
     with open(src_file, 'r', encoding='ISO-8859-1') as src, open(dst_file, 'w', encoding='ISO-8859-1') as dst:
         for line in src.readlines():
             for pattern, replacement in pairs:
-                if ignore_case:
-                    line = re.sub(pattern, replacement, line, flags=re.IGNORECASE)
-                else:
-                    line = re.sub(pattern, replacement, line)
+                match ignore_case:
+                    case True:
+                        line = re.sub(pattern, replacement, line, flags=re.IGNORECASE)
+                    case False:
+                        line = re.sub(pattern, replacement, line)
+                # if ignore_case:
+                #     line = re.sub(pattern, replacement, line, flags=re.IGNORECASE)
+                # else:
+                #     line = re.sub(pattern, replacement, line)
             dst.write(line)
