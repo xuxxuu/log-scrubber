@@ -1,5 +1,6 @@
 from pathlib import Path
 from argparse import ArgumentParser
+
 from .dirwalker import tree_walker
 from .scrubber import parse_and_replace, RE_PAIRS
 
@@ -15,7 +16,9 @@ args = parser.parse_args()
 def main():
     src = Path(args.src)
     dst = Path(args.dst)
+
     if src.is_file():
         parse_and_replace(src, dst, RE_PAIRS)
+
     else:
         tree_walker(src, dst)
