@@ -5,7 +5,7 @@ target_dir = Path("./logs")
 destination_dir = Path("./clean_logs")
 
 
-def tree_walker(src_dir: Path, dst_dir: Path):
+def tree_walker(src_dir: Path, dst_dir: Path, ignore_case: bool = False):
     for root, _, files in src_dir.walk():
         relative_root = root.relative_to(src_dir)
         destination_path = dst_dir / relative_root
@@ -14,4 +14,4 @@ def tree_walker(src_dir: Path, dst_dir: Path):
         for file in files:
             src_file = root / file
             dst_file = destination_path / file
-            parse_and_replace(src_file, dst_file, RE_PAIRS) 
+            parse_and_replace(src_file, dst_file, RE_PAIRS, ignore_case=ignore_case) 
