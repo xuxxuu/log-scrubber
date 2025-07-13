@@ -1,8 +1,7 @@
 from pathlib import Path
 from argparse import ArgumentParser
 
-from .dirwalker import tree_walker
-from .scrubber import parse_and_replace, RE_PAIRS
+from .scrubber import Scrubber
 
 parser = ArgumentParser(
     prog="Log Scrubber",
@@ -10,19 +9,32 @@ parser = ArgumentParser(
 )
 parser.add_argument('src', help="src can be a file or directory. Make dst the same type, but with your desired name for clean logs")
 parser.add_argument('dst')
+parser.add_argument('--encoding')
 parser.add_argument('--ignore-case', action='store_true', help="Make regex parsing case-insensitive")
 args = parser.parse_args()
 
 
-def main():
+def main(pairs):
     src = Path(args.src)
     dst = Path(args.dst)
+    encoding = args.encoding
     ignore = args.ignore_case
-    print(ignore)
-    exit()
+
+    scrubber = Scrubber(src, dst, pairs, encoding, ignore_case=ignore)
+    scrubber.tree_walker()
 
     if src.is_file():
-        parse_and_replace(src, dst, RE_PAIRS, ignore_case=ignore)
+        scrubber.parse_and_replace(src, dst)
 
     else:
-        tree_walker(src, dst, ignore_case=ignore)
+        scrubber.tree_walker()
+
+
+if __name__ == '__main__':
+    import re
+    pairs = [
+        (re.compile(r"a"), "HELLO"),
+        (re.compile(r"b"), "GOODBYE"),
+        (re.compile(r"c"), "ADIOS"),
+        ]
+    main(pairs)
