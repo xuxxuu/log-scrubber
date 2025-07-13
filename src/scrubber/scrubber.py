@@ -14,14 +14,17 @@ class Scrubber:
         self.ignore_case = ignore_case
 
     def parse_and_replace(self, src_file, dst_file):
-        with open(src_file, 'r', encoding=self.encoding) as src, open(dst_file, 'w', encoding=self.encoding) as dst:
-            for line in src.readlines():
-                for pattern, replacement in self.pairs:
-                    if self.ignore_case:
-                        line = re.sub(pattern, replacement, line, flags=re.IGNORECASE)
-                    else:
-                        line = re.sub(pattern, replacement, line)
-                dst.write(line)
+        try:
+            with open(src_file, 'r', encoding=self.encoding) as src, open(dst_file, 'w', encoding=self.encoding) as dst:
+                for line in src.readlines():
+                    for pattern, replacement in self.pairs:
+                        if self.ignore_case:
+                            line = re.sub(pattern, replacement, line, flags=re.IGNORECASE)
+                        else:
+                            line = re.sub(pattern, replacement, line)
+                    dst.write(line)
+        except LookupError:
+            print("Encoding provided does not exist, or is not supported. Please provide a valid encoding.")
 
     def tree_walker(self):
         for root, _, files in self.src_path.walk():
