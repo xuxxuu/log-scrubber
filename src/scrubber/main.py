@@ -4,13 +4,13 @@ from argparse import ArgumentParser
 from .scrubber import Scrubber
 
 parser = ArgumentParser(
-    prog="Log Scrubber",
+    prog='Log Scrubber',
     description="Clean logs containing sensitive data. Only the root dir name is different when `src` is a directory. Filenames don't change in these cases.",
 )
-parser.add_argument('src', help="src can be a file or directory. Make dst the same type, but with your desired name for clean logs")
+parser.add_argument('src', help='src can be a file or directory. Make dst the same type, but with your desired name for clean logs')
 parser.add_argument('dst')
-parser.add_argument('--encoding')
-parser.add_argument('--ignore-case', action='store_true', help="Make regex parsing case-insensitive")
+parser.add_argument('--encoding', default='utf-8')
+parser.add_argument('--ignore-case', action='store_true', help='Make regex parsing case-insensitive')
 args = parser.parse_args()
 
 
